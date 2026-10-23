@@ -5,6 +5,26 @@
 
 ---
 
+## 零、动手前必做：版本快照（强制前置）
+
+> 任何代码修改之前，**必须先执行快照**，确保出错可回滚。此规则优先级高于一切。
+
+### 规则
+1. ⚠️ **每次动手改代码前**，必须先运行：
+   ```bash
+   npm run snapshot -- "<本次修改的简短描述>"
+   ```
+   或 `bash scripts/snapshot.sh "<描述>"`。
+2. 快照产物在 `snapshots/YYYY-MM-DD_HHMM_<描述>/`，含完整源码 + `snapshot.json` 清单。
+3. 修改完成并验收通过后，必须执行 `git commit -m "<描述>"` 提交到 Git 仓库。
+4. **禁止跳过快照直接改代码**。若改动极小（如改个错别字）也须打快照——快照成本极低（~1.3MB），回滚价值极高。
+
+### 回滚
+- 精确回滚（到某次 commit）：`git log --oneline` → `git checkout <commit>` 或 `git reset --hard <commit>`。
+- 整体回滚（到某个快照）：先 `npm run snapshot -- "回滚前备份"`，再用目标快照目录覆盖 `src/` 等源码。
+
+---
+
 ## 一、绝对禁止的操作（红线）
 
 1. ❌ 禁止修改 `KEY_PREFIX`（当前为 `cetpass_`）。
@@ -50,6 +70,8 @@
 
 ## 四、更新后的自检清单（每次更新后必做）
 
+- [ ] **改动前已执行 `npm run snapshot -- "..."`，且 `snapshots/` 下有对应快照目录。**
+- [ ] **改动后已执行 `git commit -m "..."` 提交。**
 - [ ] `npm run build` 通过，`dist/404.html` 已生成。
 - [ ] 浏览器中创建账号 → 学 1 个词 → 刷新 → 进度仍在。
 - [ ] 把所有 `*_v2` key 复制到 `*_v1`、删除 `*_v2` → 刷新 → 账号与进度完整恢复（验证回退读取）。
@@ -73,6 +95,7 @@ localStorage 的保证范围是：**同一浏览器 + 同一域名 + 用户未�
 
 ## 六、关键文件速查
 
+- **版本快照**：[scripts/snapshot.sh](./scripts/snapshot.sh)（`npm run snapshot -- "描述"`）
 - 存储核心：[src/store/AppContext.jsx](./src/store/AppContext.jsx)
   - `KEY_PREFIX` / `STORAGE_VERSION` / `SCHEMA_VERSION` / `LEGACY_VERSIONS`
   - `getItemFallback()` / `migrateData()` / `readData()` / `writeData()` / `writeProfiles()`
