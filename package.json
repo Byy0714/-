@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build && node scripts/copy-404.cjs",
-    "preview": "vite preview --host 0.0.0.0 --port 4173"
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "snapshot": "bash scripts/snapshot.sh"
   },
   "dependencies": {
     "react": "^18.3.1",
