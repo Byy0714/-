@@ -1235,6 +1235,20 @@ svg {
   margin-top: 2px;
   flex: none;
 }
+.panel-foot.warn {
+  color: #ff6b7a;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: rgba(255, 107, 122, 0.08);
+  border: 1px solid rgba(255, 107, 122, 0.22);
+  border-radius: 10px;
+  padding: 9px 12px;
+  line-height: 1.65;
+}
+.panel-foot.warn svg {
+  color: #ff6b7a;
+  margin-top: 1px;
+}
 
 /* =========================================================
    Dashboard
@@ -4117,6 +4131,316 @@ svg {
   }
   .flash-level {
     font-size: 10px;
+  }
+}
+
+/* =========================================================
+   Library 词库浏览
+   ========================================================= */
+.library .page-head {
+  margin-bottom: 18px;
+}
+.library .page-head h1 {
+  margin: 4px 0 6px;
+  font-size: 26px;
+}
+.library .page-sub {
+  margin: 0;
+  color: var(--dim);
+  font-size: 14px;
+}
+
+/* 考试 + 模式分段 */
+.lib-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.seg-group {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+.seg-btn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--dim);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.seg-btn small {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.seg-btn:hover {
+  color: #fff;
+}
+.seg-btn.on {
+  color: #fff;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* 搜索 + 频率筛选 */
+.lib-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0 12px;
+  transition: border-color 0.2s;
+}
+.search-box:focus-within {
+  border-color: rgba(124, 108, 255, 0.6);
+}
+.search-box svg {
+  color: var(--dim);
+  flex: none;
+}
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 11px 10px;
+}
+.search-box input::placeholder {
+  color: var(--dim);
+}
+.search-clear {
+  background: none;
+  border: none;
+  color: var(--dim);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+.search-clear:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chip i {
+  font-style: normal;
+  font-size: 11px;
+  opacity: 0.7;
+}
+.chip:hover {
+  color: #fff;
+}
+.chip.on {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* 统计条 */
+.lib-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--dim);
+  padding: 10px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 16px;
+}
+.lib-stats b {
+  color: #fff;
+}
+
+/* 词条卡片网格 */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+.word-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.word-card:hover {
+  border-color: rgba(124, 108, 255, 0.4);
+  transform: translateY(-2px);
+}
+.word-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.word-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.word-en {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+.word-phon {
+  font-size: 13px;
+  color: var(--dim);
+  font-family: 'SFMono-Regular', Menlo, monospace;
+}
+.word-trans {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.55;
+}
+.word-ex {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+  border-left: 3px solid rgba(124, 108, 255, 0.5);
+  margin-bottom: 10px;
+}
+.word-ex-en {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  font-style: italic;
+}
+.word-ex-cn {
+  font-size: 12.5px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+.word-foot {
+  display: flex;
+  justify-content: flex-end;
+}
+.word-freq {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* 空状态 */
+.lib-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--dim);
+}
+.lib-empty svg {
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+.lib-empty b {
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.lib-empty p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* 分页 */
+.pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+.pager-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.pager-btn:hover:not(:disabled) {
+  background: rgba(124, 108, 255, 0.2);
+  border-color: rgba(124, 108, 255, 0.5);
+}
+.pager-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.pager-info {
+  font-size: 13px;
+  color: var(--dim);
+}
+.pager-info b {
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .word-grid {
+    grid-template-columns: 1fr;
+  }
+  .lib-toolbar {
+    flex-direction: column;
+  }
+  .seg-group {
+    width: 100%;
+    justify-content: center;
   }
 }
 

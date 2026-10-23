@@ -7,6 +7,7 @@ import { Avatar } from './ui'
 const NAV = [
   { to: '/', label: '今日', icon: 'home', end: true },
   { to: '/plan', label: '计划', icon: 'compass' },
+  { to: '/library', label: '词库', icon: 'book' },
   { to: '/progress', label: '进度', icon: 'chart' },
   { to: '/account', label: '账号', icon: 'user' },
 ]

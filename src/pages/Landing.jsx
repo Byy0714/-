@@ -235,7 +235,7 @@ export default function Landing() {
             )}
           </div>
 
-          <p className="panel-foot">
+          <p className="panel-foot warn">
             <Icon name="info" size={14} />
             进度使用浏览器 localStorage 保存。更换域名、清理站点数据或换设备后不会同步。
           </p>

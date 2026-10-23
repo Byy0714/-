@@ -9,6 +9,7 @@ import Plan from './pages/Plan'
 import Study from './pages/Study'
 import Progress from './pages/Progress'
 import Account from './pages/Account'
+import Library from './pages/Library'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -46,6 +47,7 @@ function AppRoutes() {
         <Route path="/plan" element={guarded(<Shell><Plan /></Shell>)} />
         <Route path="/study" element={guarded(<Study />)} />
         <Route path="/progress" element={guarded(<Shell wide><Progress /></Shell>)} />
+        <Route path="/library" element={guarded(<Shell wide><Library /></Shell>)} />
         <Route path="/account" element={guarded(<Shell><Account /></Shell>)} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
