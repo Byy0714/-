@@ -1,6 +1,8 @@
 # CETPass 静态托管缓存策略
 # 目标：升级后用户始终拿到最新入口文件，且旧数据（localStorage）不受影响
-# 适用：Netlify / Cloudflare Pages / 搜易云等支持 _headers 的静态托管
+# 适用：Netlify / Cloudflare Pages 等支持 _headers 的静态托管
+# 注意：搜易云不支持 _headers（且拒绝无扩展名文件），构建时会被自动从 dist/ 删除；
+#       搜易云的缓存策略请在其控制台手动配置：index.html → no-cache，/assets/* → immutable。
 
 # HTML 入口：每次都重新验证，绝不长期缓存（关键！防止升级后用户拿到旧 index.html）
 /index.html

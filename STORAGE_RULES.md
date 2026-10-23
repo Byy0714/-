@@ -63,8 +63,9 @@
 
 1. `index.html` 的缓存策略必须保持 `no-cache, no-store, must-revalidate`（见 `public/_headers` 与 `index.html` meta 标签）。
 2. `/assets/*` 必须保持 `max-age=31536000, immutable`。
-3. `npm run build` 必须保留 `node scripts/copy-404.cjs`（生成 SPA 回退用的 `404.html`），禁止删除。
-4. 部署到静态托管（搜易云 / Vercel / Netlify 等）后，**必须在后台手动刷新 CDN 缓存**，确保用户拿到最新 `index.html`。
+3. `npm run build` 必须保留 `node scripts/copy-404.cjs`（生成 SPA 回退用的 `404.html`，并清理搜易云不支持的 `dist/_headers`），禁止删除。
+4. **搜易云部署**：`_headers` 会在构建后从 `dist/` 自动删除（搜易云拒绝无扩展名文件且不读取 `_headers`），缓存策略须在搜易云控制台手动配置：`index.html` → `no-cache`，`/assets/*` → `immutable`。
+5. 部署到静态托管（搜易云 / Vercel / Netlify 等）后，**必须在后台手动刷新 CDN 缓存**，确保用户拿到最新 `index.html`。
 
 ---
 
