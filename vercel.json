@@ -1,0 +1,13 @@
+# CETPass Vercel 配置
+# Vite + React 项目，零配置也能跑。这里显式声明 Build Command / Output 避免环境变量差异。
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

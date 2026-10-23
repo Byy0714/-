@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# snapshots & releases (方案B 的产物，不进 git)
+snapshots/
+releases/
+
+# 打包文件
+*.zip
+
+# editor / os
+.DS_Store
+.idea/
+.vscode/
+*.log
