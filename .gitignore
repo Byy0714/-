@@ -11,6 +11,17 @@ releases/
 # 打包文件
 *.zip
 
+# 原生构建产物（Android / Tauri）
+*.apk
+*.deb
+*.rpm
+*.AppImage
+android/
+src-tauri/target/
+src-tauri/gen/
+android-sdk/
+gradle-*.zip
+
 # editor / os
 .DS_Store
 .idea/
