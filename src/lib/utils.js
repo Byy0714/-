@@ -1,5 +1,15 @@
 /** 通用工具函数 */
 
+import {
+  bumpRequest,
+  getNativeTts,
+  isLatestRequest,
+  isNativeApp,
+  loadNativeTts,
+  speakNative,
+  stopNative,
+} from './nativeTts'
+
 export const clamp = (n, min, max) => Math.min(max, Math.max(min, n))
 
 export const uid = (prefix = 'id') =>
@@ -73,6 +83,28 @@ export const calcStreak = (daily = {}, today = dateKey()) => {
 }
 
 export const speak = (text, lang = 'en-US', { rate = 0.9, onEnd } = {}) => {
+  if (!text) {
+    if (onEnd) onEnd()
+    return false
+  }
+
+  // Android APK：WebView 不支持 speechSynthesis，走原生 TextToSpeech
+  const native = getNativeTts()
+  if (native) {
+    bumpRequest() // 作废仍在排队的请求
+    speakNative(native, text, lang, rate, onEnd)
+    return true
+  }
+  if (isNativeApp()) {
+    // 原生插件还在加载中，就绪后再播（只播最后一次点击）
+    const id = bumpRequest()
+    loadNativeTts().then((tts) => {
+      if (!tts || !isLatestRequest(id)) return
+      speakNative(tts, text, lang, rate, onEnd)
+    })
+    return true
+  }
+
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
     if (onEnd) onEnd()
     return false
@@ -102,6 +134,11 @@ export const speak = (text, lang = 'en-US', { rate = 0.9, onEnd } = {}) => {
 }
 
 export const stopSpeaking = () => {
+  const native = getNativeTts()
+  if (native) {
+    stopNative(native)
+    return
+  }
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
     window.speechSynthesis.cancel()
   }
