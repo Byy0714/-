@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { EXAMS, LEVELS, MODES, courseWords } from '../data/words'
 import Icon from '../components/Icon'
 import { LevelTag } from '../components/ui'
@@ -16,6 +16,7 @@ export default function Library() {
   const [query, setQuery] = useState('')
   const [level, setLevel] = useState(-1)
   const [page, setPage] = useState(1)
+  const [jump, setJump] = useState('1')
 
   const examMeta = EXAMS.find((e) => e.id === exam)
   const modeMeta = MODES.find((m) => m.id === mode)
@@ -38,6 +39,39 @@ export default function Library() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
   const pageWords = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+
+  useEffect(() => {
+    setJump(String(safePage))
+  }, [safePage])
+
+  /** 页码窗口：首页、末页、当前页前后各 2 页，中间以省略号折叠 */
+  const pageItems = useMemo(() => {
+    const set = new Set([1, totalPages, safePage])
+    for (let d = 1; d <= 2; d += 1) {
+      if (safePage - d >= 1) set.add(safePage - d)
+      if (safePage + d <= totalPages) set.add(safePage + d)
+    }
+    const sorted = [...set].sort((a, b) => a - b)
+    const items = []
+    let prev = 0
+    sorted.forEach((p) => {
+      if (prev && p - prev > 1) items.push('gap')
+      items.push(p)
+      prev = p
+    })
+    return items
+  }, [safePage, totalPages])
+
+  const applyJump = () => {
+    const n = Number.parseInt(jump, 10)
+    if (Number.isNaN(n)) {
+      setJump(String(safePage))
+      return
+    }
+    const target = Math.min(totalPages, Math.max(1, n))
+    setPage(target)
+    setJump(String(target))
+  }
 
   const levelCounts = useMemo(() => {
     const c = [0, 0, 0]
@@ -171,9 +205,9 @@ export default function Library() {
                   </div>
                 )}
                 <div className="word-foot">
-                  <span className="word-freq" title="真题句频">
+                  <span className="word-freq" title={w.freq ? '真题句频' : '官方考纲新增词'}>
                     <Icon name="target" size={12} />
-                    {w.freq} 句
+                    {w.freq ? `${w.freq} 句` : '考纲'}
                   </span>
                 </div>
               </div>
@@ -184,26 +218,60 @@ export default function Library() {
 
       {/* 分页 */}
       {totalPages > 1 && (
-        <div className="pager">
-          <button
-            className="pager-btn"
-            disabled={safePage <= 1}
-            onClick={() => setPage(safePage - 1)}
-          >
-            <Icon name="arrow-left" size={15} />
-            上一页
-          </button>
-          <span className="pager-info">
-            第 <b>{safePage}</b> / {totalPages} 页
-          </span>
-          <button
-            className="pager-btn"
-            disabled={safePage >= totalPages}
-            onClick={() => setPage(safePage + 1)}
-          >
-            下一页
-            <Icon name="arrow-right" size={15} />
-          </button>
+        <div className="pager-wrap">
+          <div className="pager">
+            <button
+              className="pager-btn"
+              disabled={safePage <= 1}
+              onClick={() => setPage(safePage - 1)}
+            >
+              <Icon name="arrow-left" size={15} />
+              上一页
+            </button>
+            <div className="pager-pages">
+              {pageItems.map((it, i) =>
+                it === 'gap' ? (
+                  <span className="pager-gap" key={`gap-${i}`}>
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={it}
+                    className={`pager-num ${it === safePage ? 'on' : ''}`}
+                    onClick={() => setPage(it)}
+                  >
+                    {it}
+                  </button>
+                )
+              )}
+            </div>
+            <button
+              className="pager-btn"
+              disabled={safePage >= totalPages}
+              onClick={() => setPage(safePage + 1)}
+            >
+              下一页
+              <Icon name="arrow-right" size={15} />
+            </button>
+          </div>
+          <div className="pager-jump">
+            <span>跳至</span>
+            <input
+              type="number"
+              min={1}
+              max={totalPages}
+              value={jump}
+              onChange={(e) => setJump(e.target.value)}
+              onBlur={applyJump}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') applyJump()
+              }}
+              aria-label="跳转到指定页"
+            />
+            <span>
+              页 · 共 <b>{totalPages}</b> 页
+            </span>
+          </div>
         </div>
       )}
     </div>

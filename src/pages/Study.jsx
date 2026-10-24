@@ -313,7 +313,7 @@ export default function Study() {
                   {isReview ? `复习 · 第 ${stage + 1} 次` : '今日新词'}
                 </span>
                 <span className="flash-level" style={{ color: level.color }}>
-                  {level.name} · 真题句频 {current.word.freq || '<12'}
+                  {level.name} · {current.word.freq ? `真题句频 ${current.word.freq}` : '官方考纲新增'}
                 </span>
               </div>
 

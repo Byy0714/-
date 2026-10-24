@@ -236,6 +236,7 @@ svg {
 .app-shell {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -244,6 +245,8 @@ svg {
   position: sticky;
   top: 0;
   z-index: 40;
+  /* Android 15+ 强制 edge-to-edge，用安全区避免被状态栏遮挡 */
+  padding-top: env(safe-area-inset-top, 0px);
   backdrop-filter: blur(16px);
   background: rgba(7, 10, 23, 0.55);
   border-bottom: 1px solid transparent;
@@ -256,7 +259,8 @@ svg {
 .topbar-inner {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 0 26px;
+  padding-left: max(26px, env(safe-area-inset-left));
+  padding-right: max(26px, env(safe-area-inset-right));
   height: 68px;
   display: flex;
   align-items: center;
@@ -4394,12 +4398,20 @@ svg {
 }
 
 /* 分页 */
+.pager-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
 .pager {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 18px;
-  margin-top: 28px;
+  gap: 12px;
+  max-width: 100%;
 }
 .pager-btn {
   display: inline-flex;
@@ -4431,12 +4443,110 @@ svg {
   color: #fff;
 }
 
+/* 页码直选 */
+.pager-pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: min(100%, 430px);
+  padding: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pager-pages::-webkit-scrollbar {
+  display: none;
+}
+.pager-num {
+  flex: none;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dim);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.pager-num:hover {
+  color: #fff;
+  border-color: rgba(124, 108, 255, 0.5);
+  background: rgba(124, 108, 255, 0.16);
+}
+.pager-num.on {
+  color: #fff;
+  border-color: rgba(124, 108, 255, 0.75);
+  background: linear-gradient(135deg, rgba(124, 108, 255, 0.92), rgba(56, 200, 255, 0.72));
+  box-shadow: 0 4px 14px rgba(124, 108, 255, 0.35);
+}
+.pager-gap {
+  flex: none;
+  padding: 0 2px;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* 跳页输入 */
+.pager-jump {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--dim);
+}
+.pager-jump b {
+  color: #fff;
+}
+.pager-jump input {
+  width: 56px;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+  transition: all 0.18s;
+}
+.pager-jump input:focus {
+  border-color: rgba(124, 108, 255, 0.6);
+  background: rgba(124, 108, 255, 0.12);
+}
+.pager-jump input::-webkit-outer-spin-button,
+.pager-jump input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pager-jump input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 @media (max-width: 560px) {
   .word-grid {
     grid-template-columns: 1fr;
   }
   .lib-toolbar {
     flex-direction: column;
+  }
+  .pager {
+    gap: 8px;
+  }
+  .pager-btn {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+  .pager-pages {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    justify-content: flex-start;
   }
   .seg-group {
     width: 100%;

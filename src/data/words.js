@@ -1,13 +1,17 @@
 /**
  * 词库与课程数据
- * 全量词条来自 https://gitee.com/gjh888/youdaokaoshendict（CET4 / CET6）
- * 频率分级依据 https://english-exam.lazynote.cn/exam-words/ 的真题句频
+ * 词条来源：
+ *   1. https://cet.neea.edu.cn/res/Home/1704/55b02330ac17274664f06d9d3db8249d.pdf
+ *      全国大学英语四、六级考试大纲（2016 年修订版）官方词表
+ *   2. https://gitee.com/gjh888/youdaokaoshendict 有道考神词库（音标 / 释义 / 例句）
+ *   3. https://www.oxfordlearnersdictionaries.com 牛津高阶（补充注音与例句）
  *
- * 分级规则：
+ * 四级仍按真题句频自动分级：
  *   高频  ≥ 25 句
  *   中频  12 – 24 句
  *   低频  < 12 句，或未出现在真题词频库中
- * 学习顺序固定为：高频 → 中频 → 低频
+ * 六级在扩充时已整体上调一级（中频→高频、低频→中频，新并入词为低频），
+ * 因此六级词条自带 level 字段，不再由 freq 反推。
  */
 
 import cet4Raw from './vocab/cet4.json'
@@ -22,7 +26,7 @@ export const LEVELS = [
     key: 'high',
     name: '高频',
     short: '高',
-    desc: '真题中出现 25 句以上，考场复现率最高',
+    desc: '考场复现率最高，优先攻克',
     color: '#FF8A7A',
     glow: 'rgba(255,122,106,0.28)',
   },
@@ -31,7 +35,7 @@ export const LEVELS = [
     key: 'mid',
     name: '中频',
     short: '中',
-    desc: '真题中出现 12–24 句，阅读与听力主力词',
+    desc: '真题中较常出现，阅读与听力主力',
     color: '#FFC65C',
     glow: 'rgba(255,198,92,0.24)',
   },
@@ -40,20 +44,37 @@ export const LEVELS = [
     key: 'low',
     name: '低频',
     short: '低',
-    desc: '真题复现较少或未收录，用于兜底覆盖',
+    desc: '复现较少或考纲拓展词，用于兜底覆盖',
     color: '#8B93B5',
     glow: 'rgba(139,147,181,0.2)',
   },
 ]
 
+const cleanPhone = (phonetic) => (phonetic || '').trim().replace(/^\/+|\/+$/g, '')
+
+/** 词条支持两种格式：四级用紧凑数组，六级用带 level 的对象 */
 const toWord = (exam, row) => {
+  if (!Array.isArray(row)) {
+    return {
+      key: `${exam}:${String(row.word).toLowerCase()}`,
+      exam,
+      word: row.word,
+      phonetic: cleanPhone(row.phonetic),
+      trans: row.trans,
+      freq: row.freq ?? 0,
+      example: row.example || '',
+      exampleCn: row.exampleCn || '',
+      level: row.level ?? 2,
+    }
+  }
+
   const [word, phonetic, trans, freq, example, exampleCn] = row
   const level = freq >= HIGH_MIN ? 0 : freq >= MID_MIN ? 1 : 2
   return {
     key: `${exam}:${word.toLowerCase()}`,
     exam,
     word,
-    phonetic: (phonetic || '').trim().replace(/^\/+|\/+$/g, ''),
+    phonetic: cleanPhone(phonetic),
     trans,
     freq,
     example,
@@ -96,7 +117,7 @@ export const EXAMS = [
     glyph: 'C6',
     color: '#FF7A9C',
     color2: '#FFB168',
-    desc: '大学英语六级词汇，2345 个词条，聚焦更高阶表达。',
+    desc: `大学英语六级词汇，覆盖 ${countsOf(WORDS.cet6).total} 个词条，对齐官方考纲大纲。`,
     ...countsOf(WORDS.cet6),
   },
 ]

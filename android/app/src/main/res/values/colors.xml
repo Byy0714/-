@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 与网页端背景色保持一致，让状态栏与导航栏和页面融为一体，视觉上铺满整屏 -->
+    <color name="colorPrimary">#070A18</color>
+    <color name="colorPrimaryDark">#070A18</color>
+    <color name="colorAccent">#7C6CFF</color>
+    <color name="appBg">#070A18</color>
+</resources>
